@@ -3,14 +3,25 @@ const fs = require('fs');
 const hostname = '188.166.160.252';
 const port = 80;
 const app = express();
+const request=require('request');
+app.set('view engine', 'ejs');
 
-let cache = [];// Array is OK!
-cache[0] = fs.readFileSync( __dirname + '/index.html');
+app.use(express.static(__dirname));
 
+let http = require('http');
 
+let options = {
+  uri: 'http://37.139.19.10/text'
+};
+var temp = "there will be text"
 app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.send( cache[0] );
+request('http://37.139.19.10/text', function (error, response, body) {
+temp = body;  
+//console.log('body:', body); // Print the HTML for the Google homepage. 
+});
+    res.render('./index.ejs', {data: temp, num: 2});
+
+    
 });
 
 
